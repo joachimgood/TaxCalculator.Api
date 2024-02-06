@@ -1,0 +1,12 @@
+C:\Users\joach\source\repos\TaxCalculator.Api\TaxCalculator.Api.Data\bin\Debug\net7.0\TaxCalculator.Api.Data.deps.json
+C:\Users\joach\source\repos\TaxCalculator.Api\TaxCalculator.Api.Data\bin\Debug\net7.0\TaxCalculator.Api.Data.dll
+C:\Users\joach\source\repos\TaxCalculator.Api\TaxCalculator.Api.Data\bin\Debug\net7.0\TaxCalculator.Api.Data.pdb
+C:\Users\joach\source\repos\TaxCalculator.Api\TaxCalculator.Api.Data\obj\Debug\net7.0\TaxCalculator.Api.Data.csproj.AssemblyReference.cache
+C:\Users\joach\source\repos\TaxCalculator.Api\TaxCalculator.Api.Data\obj\Debug\net7.0\TaxCalculator.Api.Data.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\joach\source\repos\TaxCalculator.Api\TaxCalculator.Api.Data\obj\Debug\net7.0\TaxCalculator.Api.Data.AssemblyInfoInputs.cache
+C:\Users\joach\source\repos\TaxCalculator.Api\TaxCalculator.Api.Data\obj\Debug\net7.0\TaxCalculator.Api.Data.AssemblyInfo.cs
+C:\Users\joach\source\repos\TaxCalculator.Api\TaxCalculator.Api.Data\obj\Debug\net7.0\TaxCalculator.Api.Data.csproj.CoreCompileInputs.cache
+C:\Users\joach\source\repos\TaxCalculator.Api\TaxCalculator.Api.Data\obj\Debug\net7.0\TaxCalculator.Api.Data.dll
+C:\Users\joach\source\repos\TaxCalculator.Api\TaxCalculator.Api.Data\obj\Debug\net7.0\refint\TaxCalculator.Api.Data.dll
+C:\Users\joach\source\repos\TaxCalculator.Api\TaxCalculator.Api.Data\obj\Debug\net7.0\TaxCalculator.Api.Data.pdb
+C:\Users\joach\source\repos\TaxCalculator.Api\TaxCalculator.Api.Data\obj\Debug\net7.0\ref\TaxCalculator.Api.Data.dll

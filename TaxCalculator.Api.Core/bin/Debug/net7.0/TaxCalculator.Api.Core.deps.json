@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v7.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v7.0": {
+      "TaxCalculator.Api.Core/1.0.0": {
+        "dependencies": {
+          "TaxCalculator.Api.Data": "1.0.0"
+        },
+        "runtime": {
+          "TaxCalculator.Api.Core.dll": {}
+        }
+      },
+      "TaxCalculator.Api.Data/1.0.0": {
+        "runtime": {
+          "TaxCalculator.Api.Data.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "TaxCalculator.Api.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "TaxCalculator.Api.Data/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
