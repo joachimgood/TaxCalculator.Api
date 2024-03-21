@@ -23,11 +23,12 @@ namespace TaxCalculator.Api.Core.Services
 
             int totalFee = 0;
 
-            foreach (Day day in SplitPassagesIntoDays(passages))
+            foreach (var day in SplitPassagesIntoDays(passages))
             {
-                if (IsTaxFreeDay(day)) continue;
+                
+                if (IsTaxFreeDay(day.Key)) continue;
 
-                int dayFee = CalulateDayFee(day.Passages, city);
+                int dayFee = CalulateDayFee(day.Value.ToList(), city);
 
                 totalFee += dayFee;
             }
@@ -35,37 +36,21 @@ namespace TaxCalculator.Api.Core.Services
             return totalFee;
         }
 
-        private static bool IsDayOnWeekend(DateTime dateTime)
+        private static bool IsDayOnWeekend(DateOnly date)
         {
-            return dateTime.DayOfWeek == DayOfWeek.Sunday || dateTime.DayOfWeek == DayOfWeek.Saturday;
+            return date.DayOfWeek == DayOfWeek.Sunday || date.DayOfWeek == DayOfWeek.Saturday;
         }
 
-        private static bool IsDayInJuly(DateTime dateTime)
+        private static bool IsDayInJuly(DateOnly date)
         {
-            return dateTime.Month == 7;
+            return date.Month == 7;
         }
-        private static List<Day> SplitPassagesIntoDays(DateTime[] passages)
+        private static Dictionary<DateOnly, IEnumerable<DateTime>> SplitPassagesIntoDays(DateTime[] passages)
         {
-            List<Day> days = new();
-            Array.Sort(passages);
-
-            foreach (var passage in passages)
-            {
-                var matchingDay = days.FirstOrDefault(x => x.Passages.FirstOrDefault().DayOfYear == passage.DayOfYear);
-                if (matchingDay == null)
-                {
-                    days.Add(new Day
-                    {
-                        Passages = new List<DateTime> { passage }
-                    });
-                }
-                else
-                {
-                    matchingDay.Passages.Add(passage);
-                }
-            }
-
-            return days;
+            return passages
+                .Select(passage => passage.Date)
+                .Distinct()
+                .ToDictionary(DateOnly.FromDateTime, date => passages.Where(passage => passage.Date == date));
         }
 
         private int CalulateDayFee(List<DateTime> passageOfDay, string city)
@@ -126,22 +111,21 @@ namespace TaxCalculator.Api.Core.Services
             }
         }
 
-        private bool IsTaxFreeDay(Day day)
+        private bool IsTaxFreeDay(DateOnly day)
         {
 
             List<DateTime> tollFreeDates = new();
-            var year = day.Passages.First().Year;
-            if (!tollFreeDates.Any() || year != tollFreeDates.FirstOrDefault().Year)
+            if (!tollFreeDates.Any() || day.Year != tollFreeDates.FirstOrDefault().Year)
             {
-                tollFreeDates = _feeRepository.GetTollFreeDatesByYear(year);
+                tollFreeDates = _feeRepository.GetTollFreeDatesByYear(day.Year);
             }
 
-            if (tollFreeDates.Any(x => x.DayOfYear == day.Passages.First().DayOfYear))
+            if (tollFreeDates.Any(x => x.DayOfYear == day.DayOfYear))
             {
                 return true;
             }
 
-            if (IsDayOnWeekend(day.Passages.First()) || IsDayInJuly(day.Passages.First()))
+            if (IsDayOnWeekend(day) || IsDayInJuly(day))
             {
                 return true;
             }
