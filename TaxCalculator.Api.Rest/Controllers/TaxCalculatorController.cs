@@ -23,7 +23,7 @@ namespace TaxCalculator.Api.Rest.Controllers
         [HttpPost(Name = "CalculateTax")]
         public IActionResult CalculateTax([FromBody] CalculateTaxRequest request)
         {
-            if (!ModelState.IsValid || !RequestValidator.ValidateCalculateTaxRequest(request))
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
@@ -39,12 +39,15 @@ namespace TaxCalculator.Api.Rest.Controllers
     public class CalculateTaxRequest
     {
         [Required]
+        [VehicleTypeValidation]
         public string Vehicle { get; set; }
 
         [Required]
+        [CityValidation]
         public string City { get; set; }
 
         [Required]
+        [DateInRangeValidation("2013-01-01", "2013-12-31")]
         public DateTime[] Passages { get; set; }
     }
 }
