@@ -1,6 +1,4 @@
 ﻿
-using TaxCalculator.Api.Data.Entities;
-
 namespace TaxCalculator.Api.Core.Interfaces
 {
     public interface ITaxCalculatorService

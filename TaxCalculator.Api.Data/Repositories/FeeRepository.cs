@@ -5,28 +5,28 @@ namespace TaxCalculator.Api.Data.Repositories
 {
     public class FeeRepository : IFeeRepository
     {
-        private readonly List<DateTime> _tollFreeDates;
+        private readonly List<DateOnly> _tollFreeDates;
         private readonly List<CityFees> _cityFees;
         public FeeRepository()
         {
-            _tollFreeDates = new List<DateTime>
+            _tollFreeDates = new List<DateOnly>
             {
-                new DateTime(2013, 1, 1),
-                new DateTime(2013, 3, 28),
-                new DateTime(2013, 3, 29),
-                new DateTime(2013, 4, 1),
-                new DateTime(2013, 4, 30),
-                new DateTime(2013, 5, 1),
-                new DateTime(2013, 5, 8),
-                new DateTime(2013, 5, 9),
-                new DateTime(2013, 6, 5),
-                new DateTime(2013, 6, 6),
-                new DateTime(2013, 6, 21),
-                new DateTime(2013, 11, 1),
-                new DateTime(2013, 12, 24),
-                new DateTime(2013, 12, 25),
-                new DateTime(2013, 12, 26),
-                new DateTime(2013, 12, 31)
+                new DateOnly(2013, 1, 1),
+                new DateOnly(2013, 3, 28),
+                new DateOnly(2013, 3, 29),
+                new DateOnly(2013, 4, 1),
+                new DateOnly(2013, 4, 30),
+                new DateOnly(2013, 5, 1),
+                new DateOnly(2013, 5, 8),
+                new DateOnly(2013, 5, 9),
+                new DateOnly(2013, 6, 5),
+                new DateOnly(2013, 6, 6),
+                new DateOnly(2013, 6, 21),
+                new DateOnly(2013, 11, 1),
+                new DateOnly(2013, 12, 24),
+                new DateOnly(2013, 12, 25),
+                new DateOnly(2013, 12, 26),
+                new DateOnly(2013, 12, 31)
 
             };
 
@@ -53,12 +53,12 @@ namespace TaxCalculator.Api.Data.Repositories
             };
 
        
-            _tollFreeDates.AddRange(Enumerable.Range(1, 30).Select(day => new DateTime(2013, 7, day)));
+            _tollFreeDates.AddRange(Enumerable.Range(1, 30).Select(day => new DateOnly(2013, 7, day)));
         }
 
-        public List<DateTime> GetTollFreeDatesByYear(int year)
+        public List<DateOnly> GetTollFreeDates()
         {
-            return _tollFreeDates.Where(x => x.Year == year).ToList();
+            return _tollFreeDates;
         }
 
         public int GetCityMaxDayFee(string city)
@@ -72,6 +72,12 @@ namespace TaxCalculator.Api.Data.Repositories
 
             var matchingCity = _cityFees.FirstOrDefault(x => string.Equals(x.CityName, city, StringComparison.OrdinalIgnoreCase));
             return matchingCity?.HourFees?.FirstOrDefault(hourFee => dateTime.TimeOfDay >= hourFee.StartTime && dateTime.TimeOfDay < hourFee.EndTime)?.Fee ?? 0;
+        }
+        public IEnumerable<HourFee> GetFeesByCity(string city)
+        {
+            var matchingCity = _cityFees.SingleOrDefault(x => string.Equals(x.CityName, city, StringComparison.OrdinalIgnoreCase));
+            if (matchingCity == null || matchingCity?.HourFees == null) throw new Exception("City fees not found");
+            return matchingCity.HourFees;
         }
     }
 
