@@ -16,18 +16,12 @@ namespace TaxCalculator.Api.Core.Calculators
                     var passagesOfDay = day.Value.OrderBy(date => date).ToList();
                     var dateOfDay = day.Key;
 
-                    if (dateOfDay.DayOfWeek == DayOfWeek.Sunday || dateOfDay.DayOfWeek == DayOfWeek.Saturday)
-                    {
-                        continue;
-                    }
-
-                    if (tollFreeDates.Any(x => x == dateOfDay))
+                    if (IsWeekend(dateOfDay) || IsTollFreeDate(dateOfDay, tollFreeDates))
                     {
                         continue;
                     }
 
                     DateTime passageIntervalStart = passagesOfDay.First();
-
                     int intervalHighestFee = GetPassageFeeFromFees(passageIntervalStart, fees);
 
                     if (passagesOfDay.Count == 1)
@@ -82,6 +76,16 @@ namespace TaxCalculator.Api.Core.Calculators
                 .Select(passage => passage.Date)
                 .Distinct()
                 .ToDictionary(DateOnly.FromDateTime, date => passages.Where(passage => passage.Date == date));
+        }
+
+        private static bool IsWeekend(DateOnly date)
+        {
+            return date.DayOfWeek == DayOfWeek.Sunday || date.DayOfWeek == DayOfWeek.Saturday;
+        }
+
+        private static bool IsTollFreeDate(DateOnly date, IEnumerable<DateOnly> tollFreeDates)
+        {
+            return tollFreeDates.Any(x => x == date);
         }
     }
 }
