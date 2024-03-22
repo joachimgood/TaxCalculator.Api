@@ -3,6 +3,6 @@ namespace TaxCalculator.Api.Core.Interfaces
 {
     public interface ITaxCalculatorService
     {
-        int GetTax(string typeOfVehicle, DateTime[] passages, string city);
+        int GetTax(string vehicleType, DateTime[] passages, string city);
     }
 }

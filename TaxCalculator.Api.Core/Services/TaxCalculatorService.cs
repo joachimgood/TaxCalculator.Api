@@ -16,12 +16,14 @@ namespace TaxCalculator.Api.Core.Services
             _vehicleRepository = vehicleRepository;
         }
 
-        public int GetTax(string typeOfVehicle, DateTime[] passages, string city)
+        public int GetTax(string vehicleType, DateTime[] passages, string city)
         {
-            if (passages.Length == 0) return 0;
+            if (passages.Length == 0) 
+                return 0;
 
-            Vehicle vehicle = _vehicleRepository.GetVehicleByType(ToVehicleType(typeOfVehicle));
-            if (vehicle.IsTollFree) return 0;
+            var vehicle = _vehicleRepository.GetVehicleByType(ToVehicleType(vehicleType));
+            if (vehicle.IsTollFree) 
+                return 0;
 
             var maxDayFee = _feeRepository.GetCityMaxDayFee(city);
             var fees = _feeRepository.GetFeesByCity(city);
