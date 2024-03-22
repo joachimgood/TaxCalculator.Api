@@ -9,9 +9,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<ITaxCalculatorService, TaxCalculatorService>();
-builder.Services.AddSingleton<IFeeRepository, FeeRepository>();
-builder.Services.AddSingleton<IVehicleRepository, VehicleRepository>();
+builder.Services.AddTransient<ITaxCalculatorService, TaxCalculatorService>();
+builder.Services.AddTransient<IFeeRepository, FeeRepository>();
+builder.Services.AddTransient<IVehicleRepository, VehicleRepository>();
 
 var app = builder.Build();
 

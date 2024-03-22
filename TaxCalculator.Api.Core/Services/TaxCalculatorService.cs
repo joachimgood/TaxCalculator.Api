@@ -25,26 +25,14 @@ namespace TaxCalculator.Api.Core.Services
 
             foreach (var day in SplitPassagesIntoDays(passages))
             {
-                
-                if (IsTaxFreeDay(day.Key)) continue;
-
-                int dayFee = CalulateDayFee(day.Value.ToList(), city);
-
+                int dayFee = CalulateDayFee(day, city);
                 totalFee += dayFee;
             }
 
             return totalFee;
         }
 
-        private static bool IsDayOnWeekend(DateOnly date)
-        {
-            return date.DayOfWeek == DayOfWeek.Sunday || date.DayOfWeek == DayOfWeek.Saturday;
-        }
-
-        private static bool IsDayInJuly(DateOnly date)
-        {
-            return date.Month == 7;
-        }
+      
         private static Dictionary<DateOnly, IEnumerable<DateTime>> SplitPassagesIntoDays(DateTime[] passages)
         {
             return passages
@@ -53,16 +41,31 @@ namespace TaxCalculator.Api.Core.Services
                 .ToDictionary(DateOnly.FromDateTime, date => passages.Where(passage => passage.Date == date));
         }
 
-        private int CalulateDayFee(List<DateTime> passageOfDay, string city)
+        private static VehicleType ToVehicleType(string vehicle)
         {
+            if (Enum.TryParse(vehicle, true, out VehicleType result))
+            {
+                return result;
+            }
+            else
+            {
+                throw new ArgumentException("Invalid vechicle type");
+            }
+        }
+
+        //extract
+        private int CalulateDayFee(KeyValuePair<DateOnly, IEnumerable<DateTime>> day, string city)
+        {
+            if (IsTaxFreeDay(day.Key)) return 0;
+
             var maxDayFee = _feeRepository.GetCityMaxDayFee(city);
-            var passages = passageOfDay.OrderBy(date => date).ToList();
+            var passages = day.Value.OrderBy(date => date).ToList();
             int dayFee = 0;
 
             DateTime passageIntervalStart = passages.First();
             int intervalHighestFee = _feeRepository.GetFeeByCityAndHour(city, passageIntervalStart);
 
-            if (passageOfDay.Count == 1)
+            if (passages.Count == 1)
             {
                 return intervalHighestFee; // only one passage, return.
             }
@@ -99,18 +102,7 @@ namespace TaxCalculator.Api.Core.Services
             return Math.Min(dayFee, maxDayFee);
         }
 
-        private static VehicleType ToVehicleType(string vehicle)
-        {
-            if (Enum.TryParse(vehicle, true, out VehicleType result))
-            {
-                return result;
-            }
-            else
-            {
-                throw new ArgumentException("Invalid vechicle type");
-            }
-        }
-
+        //Todo: Extract
         private bool IsTaxFreeDay(DateOnly day)
         {
 
@@ -131,6 +123,16 @@ namespace TaxCalculator.Api.Core.Services
             }
 
             return false;
+        }
+
+        private static bool IsDayOnWeekend(DateOnly date)
+        {
+            return date.DayOfWeek == DayOfWeek.Sunday || date.DayOfWeek == DayOfWeek.Saturday;
+        }
+
+        private static bool IsDayInJuly(DateOnly date)
+        {
+            return date.Month == 7;
         }
     }
 }
