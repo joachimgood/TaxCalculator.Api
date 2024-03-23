@@ -18,9 +18,6 @@ namespace TaxCalculator.Api.Core.Services
 
         public int GetTax(string vehicleType, DateTime[] passages, string city)
         {
-            if (passages.Length == 0) 
-                return 0;
-
             var vehicle = _vehicleRepository.GetVehicleByType(ToVehicleType(vehicleType));
 
             if (vehicle.IsTollFree) 

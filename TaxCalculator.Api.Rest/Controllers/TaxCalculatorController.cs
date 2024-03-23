@@ -23,13 +23,7 @@ namespace TaxCalculator.Api.Rest.Controllers
         [HttpPost(Name = "CalculateTax")]
         public IActionResult CalculateTax([FromBody] CalculateTaxRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var taxFee = _taxCalculatorService.GetTax(request.Vehicle, request.Passages, request.City);
-            
             return Ok(taxFee);
         }
     }
