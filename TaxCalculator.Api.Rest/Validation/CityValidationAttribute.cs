@@ -22,7 +22,7 @@ namespace TaxCalculator.Api.Rest.Validation
                     return new ValidationResult($"City is not valid.");
                 }
             }
-            return ValidationResult.Success;
+            return new ValidationResult($"City field is required");
         }
     }
 

@@ -27,7 +27,7 @@ namespace TaxCalculator.Api.Rest.Validation
                 }
                 return ValidationResult.Success;
             }
-            return ValidationResult.Success; 
+            return new ValidationResult($"Passages field is required");
         }
     }
 

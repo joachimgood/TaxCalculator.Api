@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
 using TaxCalculator.Api.Core.Interfaces;
 using TaxCalculator.Api.Rest.Validation;
 
@@ -32,15 +31,12 @@ namespace TaxCalculator.Api.Rest.Controllers
     //Todo: move this to other file or 'Contract-project'
     public class CalculateTaxRequest
     {
-        [Required]
         [VehicleTypeValidation]
         public string Vehicle { get; set; }
 
-        [Required]
         [CityValidation]
         public string City { get; set; }
 
-        [Required]
         [DateInRangeValidation("2013-01-01", "2013-12-31")]
         public DateTime[] Passages { get; set; }
     }
