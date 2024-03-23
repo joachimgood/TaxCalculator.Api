@@ -22,6 +22,7 @@ namespace TaxCalculator.Api.Core.Services
                 return 0;
 
             var vehicle = _vehicleRepository.GetVehicleByType(ToVehicleType(vehicleType));
+
             if (vehicle.IsTollFree) 
                 return 0;
 

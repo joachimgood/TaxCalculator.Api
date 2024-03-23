@@ -22,43 +22,35 @@ namespace TaxCalculator.Api.Core.Calculators
                     }
 
                     DateTime passageIntervalStart = passagesOfDay.First();
-                    int intervalHighestFee = GetPassageFeeFromFees(passageIntervalStart, fees);
+                    int currentIntervalHighestFee = GetPassageFeeFromFees(passageIntervalStart, fees);
 
                     if (passagesOfDay.Count == 1)
                     {
-                        totalFee += intervalHighestFee;
+                        totalFee += currentIntervalHighestFee;
                         continue;
                     }
 
-                    for (int i = 1; i < passagesOfDay.Count; i++)
+                    foreach (var passage in passagesOfDay.Skip(1))
                     {
-                        TimeSpan timeDifference = passagesOfDay[i] - passageIntervalStart;
+                        TimeSpan timeDifference = passage - passageIntervalStart;
 
                         if (timeDifference.TotalMinutes < 60)
                         {
-                            var nextFee = GetPassageFeeFromFees(passagesOfDay[i], fees);
-
-                            if (nextFee > intervalHighestFee)
-                            {
-                                intervalHighestFee = nextFee;
-                            }
-
+                            int nextFee = GetPassageFeeFromFees(passage, fees);
+                            currentIntervalHighestFee = Math.Max(nextFee, currentIntervalHighestFee);
                         }
                         else
                         {
-                            //passage[i] is now new interval start. 
-                            dayFee += intervalHighestFee; //add  highest feed to dayfee.
-
-                            // set passage[i] to interval start, and fee to highest interval fee.
-                            passageIntervalStart = passagesOfDay[i];
-                            intervalHighestFee = GetPassageFeeFromFees(passagesOfDay[i], fees);
+                            dayFee += currentIntervalHighestFee;
+                            passageIntervalStart = passage;
+                            currentIntervalHighestFee = GetPassageFeeFromFees(passage, fees);
                         }
-                        if (i == passagesOfDay.Count - 1)
+
+                        if (passage == passagesOfDay.Last())
                         {
-                            dayFee += intervalHighestFee;
+                            dayFee += currentIntervalHighestFee;
                         }
                     }
-
                     totalFee += Math.Min(dayFee, maxDayFee);
                 }
                 return totalFee;
